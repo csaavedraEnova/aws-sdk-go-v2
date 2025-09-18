@@ -190,6 +190,13 @@ func (r *Attempt) handleAttempt(
 	attemptNum := retryMetadata.AttemptNum
 	maxAttempts := retryMetadata.MaxAttempts
 
+	r.logf(logger, logging.Debug, "@@@@@@@@@@@@", maxAttempts)
+	err = &MaxAttemptsError{
+		Attempt: attemptNum,
+		Err:     err,
+	}
+	return out, attemptResult, nopRelease, err
+
 	// Following attempts must ensure the request payload stream starts in a
 	// rewound state.
 	if attemptNum > 1 {
